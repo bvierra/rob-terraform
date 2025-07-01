@@ -1,0 +1,33 @@
+#cloud-config
+preserve_hostname: false
+hostname: ${hostname}
+fqdn: ${fqdn}
+prefer_fqdn_over_hostname: true
+manage_etc_hosts: true
+
+package_update: true
+package_upgrade: true
+packages:
+  - vim
+  - tmux
+  - git
+  - curl
+  - wget
+  - sudo
+  - ansible
+%{ if serial_added ~}
+runcmd:
+  - [ systemctl, enable, serial-getty@ttyS0.service ]
+  - [ systemctl, start, --no-block, serial-getty@ttyS0.service ]
+%{ endif ~}
+users:
+  - name: ${ansible_user}
+    passwd: ${ansible_password}
+    ssh-authorized-keys:
+      - ${ansible_public_key}
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo, admin
+    shell: /bin/bash
+power_state:
+  mode: reboot
+  message: Restarting after setup

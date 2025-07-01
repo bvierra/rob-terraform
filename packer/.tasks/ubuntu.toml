@@ -1,0 +1,42 @@
+["packer:ubuntu-2404"]
+description = "Build Ubuntu 24.04 template for Proxmox"
+dir = "{{ config_root }}"
+run = [
+    #'packer fmt -check -diff ubuntu-2404/',
+    'packer validate -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl -var-file config/ubuntu-2404.pkr.hcl ubuntu-2404/',
+    'packer init ubuntu-2404/',
+    'packer build -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl -var-file config/ubuntu-2404.pkr.hcl -force ubuntu-2404/'
+]
+
+["packer:ubuntu-2504"]
+description = "Build Ubuntu 25.04 template for Proxmox"
+dir = "{{ config_root }}"
+run = [
+    'packer validate -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl -var-file config/ubuntu-2504.pkr.hcl ubuntu-2504/',
+    'packer init ubuntu-2504/',
+    'packer build -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl -var-file config/ubuntu-2504.pkr.hcl -force ubuntu-2504/'
+]
+
+["packer:ubuntu-2504-fmt"]
+description = "Format Ubuntu 25.04 Packer file"
+dir = "{{ config_root }}"
+run = [
+    'packer fmt -write=true ubuntu-2504/'
+]
+
+
+["packer:rocky9"]
+description = "Build Rocky Linux 9 template for Proxmox"
+dir = "{{ config_root }}"
+run = [
+    'packer validate -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl rocky9/',
+    'packer init ubuntu-2504/',
+    'packer build -var-file config/accounts.pkr.hcl -var-file config/proxmox.pkr.hcl -var-file config/vm.pkr.hcl -force rocky9/'
+]
+
+["packer:rocky9-fmt"]
+description = "Format Ubuntu 25.04 Packer file"
+dir = "{{ config_root }}"
+run = [
+    'packer fmt -write=true rocky9/'
+]

@@ -1,0 +1,7 @@
+[tools]
+packer = "latest"
+
+[task_config]
+includes = [
+    ".tasks/ubuntu.toml"
+]

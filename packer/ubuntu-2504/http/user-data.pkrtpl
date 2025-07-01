@@ -1,0 +1,41 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  refresh-installer:
+    update: yes
+  updates: all
+  identity:
+    hostname: ${hostname}
+    realname: ${username}
+    username: ${username}
+    # plain_text_passwd: ansible  ## mkpasswd -m sha-512
+    password: ${password}
+  ssh:
+    install-server: true
+    allow-pw: true
+    authorized-keys:
+      - ${ssh_key}
+  packages:
+    - cloud-init
+    - qemu-guest-agent
+    - sudo
+    - tmux
+    - vim
+  apt:
+    #preserve_sources_list: false
+    #mirror-selection:
+    #    primary:
+    #        - country-mirror
+    #        - arches: [i386, amd64]
+    #          uri: "http://archive.ubuntu.com/ubuntu"
+    #fallback: abort
+    geoip: true
+  storage:
+    layout:
+      name: direct
+  late-commands:
+    - echo '${username} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/${username}
+  user-data:
+    disable_root: false
+    timezone: America/Los_Angeles
